@@ -7,6 +7,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cron = require('node-cron');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const WishlistItem = require('./models/WishlistItem');
 const TemporaryItem = require('./models/TemporaryItem');
@@ -17,7 +18,6 @@ const PORT = process.env.PORT || 3000;
 
 console.log('Current Directory:', __dirname);
 
-
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -27,9 +27,13 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: 'yourSecretKey',
+  secret: process.env.SESSION_SECRET, // Use environment variable for session secret
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI, // Use environment variable for MongoDB URI
+    ttl: 14 * 24 * 60 * 60 // Save session for 14 days
+  }),
   cookie: { maxAge: 3600000 } // Session expires in 1 hour
 }));
 
@@ -46,14 +50,13 @@ app.get('/', async (req, res) => {
   res.render('index', { items, loggedIn: req.session.isAuthenticated });
 });
 
-
 // Other routes (like add item) should also pass `loggedIn`
 app.get('/wishlist/add', (req, res) => {
   res.render('addItem', { loggedIn: req.session.isAuthenticated });
 });
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/wishlist', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
