@@ -3,8 +3,7 @@ const router = express.Router();
 const dotenv = require('dotenv');
 
 dotenv.config(); // Load environment variables from .env file
-console.log('USERNAME:', process.env.ADMIN);
-console.log('PASSWORD:', process.env.PASSKEY);
+
 
 // Read username and password from environment variables
 const USERNAME = process.env.ADMIN;
