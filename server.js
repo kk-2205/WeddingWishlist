@@ -16,7 +16,7 @@ const PurchasedItem = require('./models/PurchasedItem');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
+console.log('Current Directory:', __dirname);
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -27,12 +27,11 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Use environment variable for session secret
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI, // Use environment variable for MongoDB URI
-    ttl: 14 * 24 * 60 * 60 // Save session for 14 days
+    mongoUrl: process.env.MONGODB_URI
   }),
   cookie: { maxAge: 3600000 } // Session expires in 1 hour
 }));
@@ -81,5 +80,3 @@ cron.schedule('* * * * *', async () => {
     console.error('Error in cron job:', err);
   }
 });
-
-module.exports = app;
