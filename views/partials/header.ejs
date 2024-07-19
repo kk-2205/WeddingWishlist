@@ -1,0 +1,17 @@
+<header class="header">
+    <div class="header-left">
+        <a href="/" class="couple-link">
+            <img src="/images/couple.jpg" alt="Couple Photo" class="couple-photo">
+            <span class="couple-name">Soham weds Sai Priya</span>
+        </a>
+    </div>
+    <div class="header-right">
+        <% if (loggedIn) { %>
+            <a href="/wishlist/add" class="btn">Add Item</a>
+            <a href="/wishlist/purchased" class="btn">Purchased Items</a>
+            <a href="/auth/logout" class="btn">Logout</a>
+        <% } else { %>
+            <a href="/auth/login" class="btn">LOGIN</a>
+        <% } %>
+    </div>
+</header>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!-- Include Header -->
+    <%- include('partials/header') %>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="welcome-section">
+            <img src="/images/welcome.jpg" alt="Welcome Image" class="welcome-image">
+            <div class="welcome-text">
+                <h1 class="welcome-heading-1">Welcome!</h1>
+                <h2 class="welcome-heading-2">Soham Sarkar<br>
+                    weds<br>
+                    Sai Priyadarshini<br> Krishnan</h2>
+                <div class="welcome-instructions-shadow">
+                <p class="welcome-instructions">We are thrilled to celebrate the union of Sai Priyadarshini and Soham Sarkar! To make gift-giving easier and more meaningful, we've created a wishlist of items they'd love to receive. 
+
+                    Whether you're a family member, friend, or well-wisher, explore the curated selection to find the perfect gift that truly reflects their style and needs. Your thoughtful contribution will be cherished and appreciated.
+                    
+                    Thank you for being a part of this special occasion!</p></div>
+            </div>
+        </div>
+    </div>
+       <!-- Instructions -->
+    <div class="container instructions-section">
+        <h2>INSTRUCTIONS</h2>
+        <div class="instructions-box">
+            <div class="instruction">
+                <h3>Browse the Wishlist</h3>
+                <p>Scroll down to view all the items we have added to our wishlist. Each item includes an image, name, and a link to purchase it.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="instruction">
+                <h3>Select an Item</h3>
+                <p>If you decide to purchase an item, click the "Select Item" button. This will temporarily reserve the item for you.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="instruction">
+                <h3>Confirm Purchase</h3>
+                <p>After selecting an item, you will be redirected to a confirmation page. Here, you can confirm your purchase by filling in the required details.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="instruction">
+                <h3>Cancel Purchase</h3>
+                <p>If you decide not to purchase the item, make sure to hit the "CANCEL" button to return the item to the wishlist. Do not move back to the previous page or reload the page without either confirming or canceling your selection.</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Wishlist -->
+    <div class="container">
+        <h2 class="wishlist-heading">WISHLIST</h2>
+        <div class="wishlist-items">
+            <% items.forEach(item => { %>
+            <div class="wishlist-item">
+                <img src="<%= item.image %>" alt="<%= item.name %>">
+                <br><h3><%= item.name %></h3><br>
+                <p class="Item-price">Rs. <%= item.price%></p><br><br>
+                <form action="/wishlist/temporary" method="post">
+                    <input type="hidden" name="id" value="<%= item._id %>">
+                    <button type="submit" class="btn-submit">Select Item</button>
+                </form>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <!-- CSS File -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- Script for showing login alert -->
+    <script>
+        function showLoginAlert() {
+            alert('Please log in to add an item to the wishlist.');
+        }
+    </script>
+</body>
+</html>

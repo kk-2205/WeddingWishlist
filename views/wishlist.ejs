@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('../views/partials/header') %>
+  
+  <div class="container">
+    <div class="wishlist-items">
+      <% items.forEach(item => { %>
+        <div class="wishlist-item">
+          <img src="<%= item.image %>" alt="<%= item.name %>">
+          <h3><%= item.name %></h3>
+          <a href="<%= item.amazonLink %>" target="_blank">Buy on Amazon</a>
+          <form action="/wishlist/temporary" method="post">
+            <input type="hidden" name="id" value="<%= item._id %>">
+            <button type="submit" class="btn">Select Item</button>
+          </form>
+        </div>
+      <% }) %>
+    </div>
+
+    <% if (loggedIn) { %>
+      <h2>Add New Item</h2>
+      <form action="/wishlist/add" method="post">
+        <label for="amazonLink">Amazon Link:</label>
+        <input type="text" id="amazonLink" name="amazonLink" required>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="image">Image URL (optional):</label>
+        <input type="text" id="image" name="image">
+        <label for="price">Price (optional):</label>
+        <input type="text" id="price" name="price">
+        <button type="submit" class="btn">Add Item</button>
+      </form>
+    <% } else { %>
+      <p>Please <a href="/auth/login">log in</a> to add new items to the wishlist.</p>
+    <% } %>
+
+    <a href="/wishlist/purchased" class="btn">View Purchased Items</a>
+  </div>
+  <script>
+    function showLoginAlert() {
+      alert('Please log in to add an item to the wishlist.');
+    }
+  </script>
+
+</body>
+</html>
