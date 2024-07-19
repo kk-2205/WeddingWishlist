@@ -81,3 +81,5 @@ cron.schedule('* * * * *', async () => {
     console.error('Error in cron job:', err);
   }
 });
+
+module.exports = app;
