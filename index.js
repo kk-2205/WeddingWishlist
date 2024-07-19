@@ -30,10 +30,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    collectionName: 'sessions'
-  }),
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   cookie: { maxAge: 3600000 } // Session expires in 1 hour
 }));
 
@@ -62,6 +59,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => {
   console.log('MongoDB connected');
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 })
 .catch(err => console.error('MongoDB connection error:', err));
 
@@ -79,5 +79,4 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
-// Export the Express app for Vercel
-module.exports = app;
+module.exports = app; // Ensure you export the app
