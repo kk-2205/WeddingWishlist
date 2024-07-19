@@ -31,7 +31,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI
+    mongoUrl: process.env.MONGODB_URI,
+    collectionName: 'sessions'
   }),
   cookie: { maxAge: 3600000 } // Session expires in 1 hour
 }));
@@ -56,14 +57,11 @@ app.get('/wishlist/add', (req, res) => {
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
-  //useNewUrlParser: true,
-  //useUnifiedTopology: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
 .then(() => {
   console.log('MongoDB connected');
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
 })
 .catch(err => console.error('MongoDB connection error:', err));
 
@@ -80,3 +78,6 @@ cron.schedule('* * * * *', async () => {
     console.error('Error in cron job:', err);
   }
 });
+
+// Export the Express app for Vercel
+module.exports = app;
