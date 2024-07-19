@@ -16,7 +16,7 @@ const PurchasedItem = require('./models/PurchasedItem');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-console.log('Current Directory:', __dirname);
+
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
