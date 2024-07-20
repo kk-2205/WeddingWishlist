@@ -593,7 +593,7 @@ body {
 
   .welcome-instructions-shadow::before,
 .welcome-instructions-shadow::after {
-width: 180px;
+width: 330px;
 }
   .welcome-instructions{
     line-height: 1.3;
