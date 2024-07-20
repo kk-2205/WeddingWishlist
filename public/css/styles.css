@@ -570,9 +570,7 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Adjust grid for mobile */
   }
 
-  .instructions-section h2 {
-    font-size: 20px;
-  }
+
 
   .instructions-box {
     display: flex;
