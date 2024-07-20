@@ -557,4 +557,10 @@ body {
   .instructions-section h2 {
     font-size: 20px;
   }
+
+  .instructions-box {
+    display: flex;
+    flex-direction: column; /* Stack instructions one below the other */
+    gap: 10px; /* Space between items */
+  }
 }
