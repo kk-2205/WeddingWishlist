@@ -53,10 +53,7 @@ app.get('/wishlist/add', (req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
   console.log('MongoDB connected');
   app.listen(PORT, () => {
