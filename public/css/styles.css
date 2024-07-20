@@ -586,9 +586,14 @@ body {
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    width:90%;
+    width:200px;
     height: auto;
   }
+
+  .welcome-instructions-shadow::before,
+.welcome-instructions-shadow::after {
+width: 180px;
+}
   .welcome-instructions{
     line-height: 1.3;
   }
