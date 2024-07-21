@@ -63,17 +63,5 @@ mongoose.connect(process.env.MONGODB_URI)
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Check every minute if items in the temporary list should be moved back to the wishlist
-cron.schedule('* * * * *', async () => {
-  try {
-    const expiredItems = await TemporaryItem.find({ createdAt: { $lt: new Date(Date.now() - 3600000) } }); // 1 hour
-    for (const item of expiredItems) {
-      const wishlistItem = new WishlistItem(item.toObject());
-      await wishlistItem.save();
-      await TemporaryItem.findByIdAndDelete(item._id);
-    }
-  } catch (err) {
-    console.error('Error in cron job:', err);
-  }
-});
 
 module.exports = app; // Ensure you export the app
