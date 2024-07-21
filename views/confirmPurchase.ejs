@@ -10,6 +10,7 @@
     <%- include('partials/header') %>
     <div class="container">
         <h1>Confirm Purchase</h1>
+        <p>PLEASE DO NOT MOVE TO THE PREVIOUS PAGE OR RELOAD THE WEBSITE. PLEASE CLICK THE CANCEL BUTTON IF YOU DO NOT INTEND TO PURCHASE THIS ITEM!</p>
         <form id="confirmForm" action="/wishlist/purchased" method="post">
             <input type="hidden" name="id" value="<%= item._id %>"> <!-- Hidden input for item ID -->
             <div class="form-group">
