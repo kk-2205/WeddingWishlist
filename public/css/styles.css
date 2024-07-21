@@ -193,7 +193,7 @@ body {
 .welcome-heading-1 {
   font-family: 'Merriweather', serif;
   font-style: italic;
-  font-size: 350%;
+  font-size: 400%;
   color: rgb(132, 61, 64); /* Gold color */
   text-align: center;
   margin: 0;
@@ -202,7 +202,7 @@ body {
 .welcome-heading-2 {
   font-family: 'Merriweather', serif;
   font-style: italic;
-  font-size: 320%;
+  font-size: 350%;
   color: #A9575Aff; /* Gold color */
   text-align: center;
   margin: 0;
@@ -523,11 +523,12 @@ body {
 }
 
 .footer {
-  position: fixed;
+  position: right;
   bottom: 10px;
   right: 10px;
   font-size: 14px;
   color: #7C4D53ff;
+  
 }
 
 .footer a {
@@ -537,6 +538,7 @@ body {
 
 .footer a:hover {
   text-decoration: underline;
+  color: #7C4D53ff;
 }
 
 
