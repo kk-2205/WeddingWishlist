@@ -666,7 +666,7 @@ width: 100%;
     gap: 10px;
 }
 .footer {
-  position: right;
+  position: bottom;
   bottom: 10px;
   font-size: 16px;
   color: #7C4D53ff;
