@@ -555,25 +555,24 @@ a.cancel-button:hover {
   background-color: #7C4D53ff;
   color: #F9DCD1ff;
 }
-
 .footer {
-  position: right;
+  position: fixed;
   bottom: 10px;
   right: 10px;
   font-size: 16px;
-  color: #7C4D53ff;
-  margin-left:1300px;
+  color: #7C4D53;
+  text-align: right;
 }
 
 .footer a {
-  color: #7C4D53ff;
-  font-weight:bold;
+  color: #7C4D53;
+  font-weight: bold;
   text-decoration: none;
 }
 
 .footer a:hover {
   text-decoration: underline;
-  color: #7C4D53ff;
+  color: #7C4D53;
 }
 
 
@@ -664,22 +663,11 @@ width: 100%;
   display: flex;
     flex-direction: column;
     gap: 10px;
-}
-.footer {
+}.footer {
   position: bottom;
-  bottom: 10px;
-  font-size: 16px;
-  color: #7C4D53ff;
-}
-
-.footer a {
-  color: #7C4D53ff;
-  font-weight:bold;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-  color: #7C4D53ff;
+  right: 0; /* Center horizontally */
+  left: 0; /* Center horizontally */
+  text-align: center; /* Center the text */
+  justify-content: center; /* Center the content */
 }
 }
