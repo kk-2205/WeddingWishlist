@@ -60,7 +60,7 @@
             <div class="button-group">
                 <button type="submit" class="confirm-button">Confirm Purchase</button>
             </form>
-        <button href="/wishlist/saved" type="button" class="cancel-button">CANCEL</button>
+        <a href="/wishlist/saved" type="button" class="cancel-button">CANCEL</a>
         <form id="cancelForm" action="/wishlist/cancel" method="post">
             <input type="hidden" name="id" value="<%= item._id %>">
             <button type="submit" class="btn-submit">Move Item back to Wishlist</button>
