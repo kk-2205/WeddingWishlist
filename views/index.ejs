@@ -6,10 +6,11 @@
     <title>Welcome</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+<header>
+ <!-- Include Header -->
+ <%- include('partials/header') %>
+</header>
 <body>
-    <!-- Include Header -->
-    <%- include('partials/header') %>
-
     <!-- Main Content -->
     <div class="container">
         <div class="welcome-section">
@@ -33,23 +34,23 @@
         <h2>INSTRUCTIONS</h2>
         <div class="instructions-box">
             <div class="instruction">
+                <h3>Sign Up / Log In</h3>
+                <p>Create an account and log in to access wishlist features. Browse and save your favorite items.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="instruction">
                 <h3>Browse the Wishlist</h3>
-                <p>Scroll down to view all the items we have added to our wishlist. Each item includes an image, name, and a link to purchase it.</p>
+                <p>Explore items on the wishlist. Each includes an image, name, and price. Select items to save them.</p>
             </div>
             <div class="arrow">→</div>
             <div class="instruction">
-                <h3>Select an Item</h3>
-                <p>If you decide to purchase an item, click the "Select Item" button. This will temporarily reserve the item for you.</p>
+                <h3>Manage Saved List</h3>
+                <p>View saved items anytime. Decide to purchase, cancel, or move back to the wishlist. Items saved for over a week will return to the wishlist.</p>
             </div>
             <div class="arrow">→</div>
             <div class="instruction">
-                <h3>Confirm Purchase</h3>
-                <p>After selecting an item, you will be redirected to a confirmation page. Here, you can confirm your purchase by filling in the required details.</p>
-            </div>
-            <div class="arrow">→</div>
-            <div class="instruction">
-                <h3>Cancel Purchase</h3>
-                <p>If you decide not to purchase the item, make sure to hit the "CANCEL" button to return the item to the wishlist. Do not move back to the previous page or reload the page without either confirming or canceling your selection.</p>
+                <h3>Confirm / Cancel Purchase</h3>
+                <p>Confirm your purchase with details, or cancel to return the item to the saved list, or move it back to the wishlist.</p>
             </div>
         </div>
     </div>
@@ -66,7 +67,7 @@
                 <img src="<%= item.image %>" alt="<%= item.name %>">
                 <br><h3><%= item.name %></h3><br>
                 <p class="Item-price">Rs. <%= item.price%></p><br><br>
-                <form action="/wishlist/temporary" method="post">
+                <form action="/wishlist/saved" method="post">
                     <input type="hidden" name="id" value="<%= item._id %>">
                     <button type="submit" class="btn-submit">Select Item</button>
                 </form>
@@ -75,14 +76,14 @@
         </div>
     </div>
 <!-- Footer -->
-<p class="footer">
+<footer class="footer">
     <p>
         made by 
         <a href="https://www.linkedin.com/in/karishma-kamalahasan-662087192/" target="_blank" rel="noopener noreferrer">
             Karishma Kamalahasan
         </a>
     </p>
-</p>
+</footer>
 
     <!-- CSS File -->
     <link rel="stylesheet" href="/css/styles.css">

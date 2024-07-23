@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Items</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<header>
+    <!-- Include Header -->
+    <%- include('partials/header') %>
+   </header>
+<body>
+  <section class="purchased-section">
+    <h1 class="wishlist-heading">MY SAVED LIST</h1>
+    <div class="purchased-items">
+      <% items.forEach(item => { %>
+        <div class="wishlist-item">
+          <img src="<%= item.image %>" alt="<%= item.name %>">
+          <h3><%= item.name %></h3>
+          <p class="Item-price">Rs. <%= item.price %></p>
+          <form action="/wishlist/confirmPurchase" method="get">
+            <input type="hidden" name="id" value="<%= item._id %>">
+            <button type="submit" class="btn-submit">Purchase Item</button>
+          </form>
+          <form id="cancelForm" action="/wishlist/cancel" method="post">
+            <input type="hidden" name="id" value="<%= item._id %>">
+            <button type="submit" class="btn-submit">Move Item back to Wishlist</button>
+        </form>
+        </div>
+      <% }); %>
+    </div>
+    <a href="/" class="btn-submit-purchased">Back to Wishlist</a>
+  </section>
+</body>
+</html>

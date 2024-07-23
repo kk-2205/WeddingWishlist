@@ -1,17 +1,26 @@
 <header class="header">
     <div class="header-left">
-        <a href="/" class="couple-link">
-            <img src="/images/couple.jpg" alt="Couple Photo" class="couple-photo">
-            <span class="couple-name">Soham weds Sai Priya</span>
-        </a>
+      <a href="/" class="couple-link">
+        <img src="/images/couple.jpg" alt="Couple" class="couple-photo">
+        <span class="couple-name">Soham & Sai</span>
+      </a>
     </div>
     <div class="header-right">
-        <% if (loggedIn) { %>
-            <a href="/wishlist/add" class="btn">Add Item</a>
-            <a href="/wishlist/purchased" class="btn">Purchased Items</a>
-            <a href="/auth/logout" class="btn">Logout</a>
-        <% } else { %>
-            <a href="/auth/login" class="btn">LOGIN</a>
-        <% } %>
+        <% if (session && session.isMarriedCouple) { %>
+          <a href="/wishlist/add" class="btn">Add Item</a>
+          <a href="/wishlist/purchased" class="btn">Purchased Items</a>
+          <a href="/auth/logout" class="btn">Logout</a>
+        <% } else if (loggedIn) { %>
+          <a href="/wishlist/saved" class="btn">Saved List</a>
+          <a href="/auth/logout" class="btn">Logout</a>
+         <% if(user) { %>
+            <span class="couple-name"> <%= user.name %></span>
+         <% } %>
+      <% } else { %>
+        <a href="/auth/signup" class="btn">Sign Up</a>
+        <a href="/auth/login" class="btn">Admin Login</a>
+        <a href="/auth/guest-login" class="btn">Guest Login</a>
+      <% } %>
     </div>
-</header>
+  </header>
+  

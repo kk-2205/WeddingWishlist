@@ -3,14 +3,50 @@ const router = express.Router();
 const WishlistItem = require('../models/WishlistItem');
 const TemporaryItem = require('../models/TemporaryItem');
 const PurchasedItem = require('../models/PurchasedItem');
-const moment = require('moment'); 
+const User = require('../models/User');
+const moment = require('moment');
 
-// Middleware to check if user is logged in
-function isAuthenticated(req, res, next) {
+// Middleware to check if the user is authenticated
+async function isAuthenticated(req, res, next) {
   if (req.session.isAuthenticated) {
-    return next();
+    try {
+      const user = await User.findById(req.session.userId); // Assuming userId is stored in session
+      if (user) {
+        req.user = user;
+        return next();
+      } else {
+        if (req.session.isMarriedCouple) {
+          return next();
+        }
+        return res.status(401).send('You must log in to perform this action');
+      }
+    } catch (err) {
+      return res.status(500).send('Internal Server Error');
+    }
   } else {
-    res.status(401).send('You must log in to perform this action');
+    return res.status(401).send('You must log in to perform this action');
+  }
+}
+
+// Middleware to check if the user is a guest
+function isGuest(req, res, next) {
+  if (req.session.isAuthenticated && !req.session.isMarriedCouple) {
+    return next();
+  } else if (!req.session.isAuthenticated) {
+    return res.redirect('/auth/login'); // Redirect unauthenticated users to login
+  } else {
+    res.status(403).send('Guests only');
+  }
+}
+
+// Middleware to check if the user is a married couple
+function isMarriedCouple(req, res, next) {
+  if (req.session.isMarriedCouple) {
+    return next();
+  } else if (!req.session.isAuthenticated) {
+    return res.redirect('/auth/login'); // Redirect unauthenticated users to login
+  } else {
+    res.status(403).send('Only the married couple can perform this action');
   }
 }
 
@@ -18,19 +54,19 @@ function isAuthenticated(req, res, next) {
 router.get('/', async (req, res) => {
   try {
     const wishlistItems = await WishlistItem.find();
-    res.render('wishlist', { items: wishlistItems, loggedIn: req.session.isAuthenticated });
+    res.render('wishlist', { items: wishlistItems, loggedIn: req.isAuthenticated(), session: req.session, user: req.user });
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
 // Render the add item form
-router.get('/add', isAuthenticated, (req, res) => {
-  res.render('addItem', { loggedIn: req.session.isAuthenticated });
+router.get('/add', isAuthenticated, isMarriedCouple, (req, res) => {
+  res.render('addItem', { loggedIn: req.session.isAuthenticated, session: req.session  });
 });
 
 // Handle adding new item to the wishlist
-router.post('/add', isAuthenticated, async (req, res) => {
+router.post('/add', isAuthenticated, isMarriedCouple, async (req, res) => {
   try {
     const { name, image, amazonLink, price } = req.body;
     const newItem = new WishlistItem({ name, image, amazonLink, price });
@@ -41,66 +77,82 @@ router.post('/add', isAuthenticated, async (req, res) => {
   }
 });
 
-// Move item to temporary list only for non-logged-in users and show confirmation form
-router.post('/temporary', async (req, res) => {
-  if (req.session.isAuthenticated) {
-    return res.status(403).send('Married couple cannot interact with wishlist items');
-  }
+// Save item to user's saved list
+router.post('/saved', isAuthenticated, isGuest, async (req, res) => {
   try {
     const { id } = req.body;
     const item = await WishlistItem.findById(id);
     if (!item) return res.status(404).send('Item not found');
 
+    // Create a new TemporaryItem
     const temporaryItem = new TemporaryItem(item.toObject());
     await temporaryItem.save();
+
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).send('User not found');
+
+    // Add TemporaryItem to the user's savedItems
+    if (!user.savedItems.includes(temporaryItem._id)) {
+      user.savedItems.push(temporaryItem._id);
+      await user.save();
+    }
+
+    // Remove the item from the Wishlist
     await WishlistItem.findByIdAndDelete(id);
 
-    res.render('confirmPurchase', { item: temporaryItem, loggedIn: req.session.isAuthenticated });
+    res.redirect('/wishlist/saved');
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// Move item from temporary to purchased
-router.post('/purchased', async (req, res) => {
+// Show saved list
+router.get('/saved', isAuthenticated, isGuest, async (req, res) => {
   try {
-    const { id, dateOfArrival, purchasedBy, message, contact } = req.body; // Removed other fields from req.body
-    const item = await TemporaryItem.findById(id); // Find item in TemporaryItem
+    const user = await User.findById(req.user._id).populate('savedItems').exec();
+    res.render('savedList', { items: user.savedItems, loggedIn: req.session.isAuthenticated, session: req.session, user: req.user });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// Show confirm purchase form
+router.get('/confirmPurchase', isAuthenticated, isGuest, async (req, res) => {
+  try {
+    const item = await TemporaryItem.findById(req.query.id);
     if (!item) return res.status(404).send('Item not found');
 
+    res.render('confirmPurchase', { item: item, loggedIn: req.session.isAuthenticated, session: req.session,user: req.user });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// Confirm purchase route
+router.post('/confirmPurchase', isAuthenticated, isGuest, async (req, res) => {
+  try {
+    const { id, dateOfArrival, purchasedBy, message, contact } = req.body;
+
+    const user = await User.findById(req.user._id);
+    const itemIndex = user.savedItems.indexOf(id);
+    if (itemIndex === -1) return res.status(404).send('Item not found in saved list');
+
+    const temporaryItem = await TemporaryItem.findById(id);
+    if (!temporaryItem) return res.status(404).send('TemporaryItem not found');
+
     const purchasedItem = new PurchasedItem({
-      name: item.name,
-      image: item.image,
+      name: temporaryItem.name,
+      image: temporaryItem.image,
       dateOfArrival,
       purchasedBy,
       message,
       contact
     });
 
-    await purchasedItem.save(); // Save item to PurchasedItem
-    await TemporaryItem.findByIdAndDelete(id); // Remove item from TemporaryItem
+    await purchasedItem.save();
+    user.savedItems.splice(itemIndex, 1);
+    await user.save();
 
-    res.redirect('/'); // Redirect to home after purchase
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
-
-// Move item from temporary back to wishlist on cancel
-router.post('/cancel', async (req, res) => {
-  try {
-    const { id } = req.body;
-    const item = await TemporaryItem.findById(id);
-    if (!item) return res.status(404).send('Item not found');
-
-    const wishlistItem = new WishlistItem({
-      name: item.name,
-      image: item.image,
-      amazonLink: item.amazonLink,
-      price: item.price,
-    });
-
-    await wishlistItem.save();
     await TemporaryItem.findByIdAndDelete(id);
 
     res.redirect('/');
@@ -109,14 +161,43 @@ router.post('/cancel', async (req, res) => {
   }
 });
 
-// Get all purchased items
-router.get('/purchased', isAuthenticated, async (req, res) => {
+// Move item from saved list back to wishlist
+router.post('/cancel', isAuthenticated, isGuest, async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const user = await User.findById(req.user._id);
+    const itemIndex = user.savedItems.indexOf(id);
+    if (itemIndex === -1) return res.status(404).send('Item not found in saved list');
+
+    const temporaryItem = await TemporaryItem.findById(id);
+    const wishlistItem = new WishlistItem({
+      name: temporaryItem.name,
+      image: temporaryItem.image,
+      amazonLink: temporaryItem.amazonLink,
+      price: temporaryItem.price
+    });
+
+    await wishlistItem.save();
+    user.savedItems.splice(itemIndex, 1);
+    await user.save();
+
+    await TemporaryItem.findByIdAndDelete(id);
+
+    res.redirect('/');
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// Show purchased list (Only for the married couple)
+router.get('/purchased', isAuthenticated, isMarriedCouple, async (req, res) => {
   try {
     const purchasedItems = await PurchasedItem.find();
     purchasedItems.forEach(item => {
       item.formattedDate = moment(item.dateOfArrival).format('ddd, MMM D YYYY'); // Format the date
     });
-    res.render('purchased', { items: purchasedItems, loggedIn: req.session.isAuthenticated });
+    res.render('purchased', { items: purchasedItems, loggedIn: req.session.isAuthenticated, session: req.session, user: req.user });
   } catch (err) {
     res.status(500).send(err.message);
   }
