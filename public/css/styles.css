@@ -413,9 +413,13 @@ a.cancel-button {
   background-color: rgb(162, 14, 34); /* Background color for Cancel */
   color: rgb(255, 255, 255); /* Text color */
   border: 1px solid rgb(0, 0, 0);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
-.cancel-button:hover {
+a.cancel-button:hover {
   background-color: #F9DCD1ff;
   color: rgb(162, 14, 34);
 }
