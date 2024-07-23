@@ -414,6 +414,9 @@ a.cancel-button {
   color: rgb(255, 255, 255); /* Text color */
   border: 1px solid rgb(0, 0, 0);
   text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  width: 200px;
   padding: 10px 20px;
   border-radius: 5px;
   transition: all 0.3s ease;
