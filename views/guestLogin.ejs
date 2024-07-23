@@ -1,71 +1,39 @@
+<!-- views/login.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirm Purchase</title>
-    <link rel="stylesheet" href="/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <header>
     <!-- Include Header -->
     <%- include('partials/header') %>
    </header>
 <body>
-    <div class="container">
-        <h1>Confirm Purchase</h1>
-        <p>PLEASE DO NOT MOVE TO THE PREVIOUS PAGE OR RELOAD THE WEBSITE. PLEASE CLICK THE CANCEL BUTTON IF YOU DO NOT INTEND TO PURCHASE THIS ITEM!</p>
-        <form id="confirmForm" action="/wishlist/confirmPurchase" method="post">
-            <input type="hidden" name="id" value="<%= item._id %>"> <!-- Hidden input for item ID -->
-            <div class="form-group">
-                <label>Item Name:</label>
-                <p><%= item.name %></p>
-                <input type="hidden" name="name" value="<%= item.name %>">
-            </div>
-            <div class="form-group">
-                <label>Amazon Link:</label>
-                <p><a href="<%= item.amazonLink %>" target="_blank"><%= item.amazonLink %></a></p>
-                <input type="hidden" name="amazonLink" value="<%= item.amazonLink %>">
-            </div>
-            <div class="form-group">
-                <label>Image:</label>
-                <img src="<%= item.image %>" alt="<%= item.name %>">
-                <input type="hidden" name="image" value="<%= item.image %>">
-            </div>
-            <div class="form-group">
-                <label>Price:</label>
-                <p><%= item.price %></p>
-                <input type="hidden" name="price" value="<%= item.price %>">
-            </div>
-            <div class="form-group">
-                <label>Shipping Address:</label>
-                <p><%= item.address %></p>
-                <input type="hidden" name="address" value="<%= item.address %>">
-            </div>
-            <div class="form-group">
-                <label for="dateOfArrival">Date of Arrival:</label>
-                <input type="date" id="dateOfArrival" name="dateOfArrival" required>
-            </div>
-            <div class="form-group">
-                <label for="purchasedBy">Purchased By:</label>
-                <input type="text" id="purchasedBy" name="purchasedBy" required>
-            </div>
-            <div class="form-group">
-                <label for="contact">Contact Details(email or WhatsApp No.):</label>
-                <input type="text" id="contact" name="contact" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
-            </div>
-            <div class="button-group">
-                <button type="submit" class="confirm-button">Confirm Purchase</button>
-            </form>
-        <button href="/wishlist/saved" type="button" class="cancel-button">CANCEL</button>
-        <form id="cancelForm" action="/wishlist/cancel" method="post">
-            <input type="hidden" name="id" value="<%= item._id %>">
-            <button type="submit" class="btn-submit">Move Item back to Wishlist</button>
-        </form>
-            </div>
-    </div>
+ 
+  <div class="login-container">
+    <h2>Login</h2>
+    <p>Please check your email for Login details!</p>
+    <form id="login" action="/auth/guest-login" method="POST">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email"  name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn-submit">Login</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('login').addEventListener('submit', function(event) {
+            alert('Your have logged in!');
+            window.location.href = '/'; // Redirect to the home page
+        });
+  </script>
 </body>
+
 </html>
