@@ -403,23 +403,49 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
+  height:50px;
+}
+.btn-submit-form{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #F9DCD1ff;
+  color: #7C4D53ff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border: 1px solid #7C4D53ff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 10px;
+  height:50px;
+}
+.btn-submit-form:hover {
+  background-color: #7C4D53ff;
+  color: #F9DCD1ff;
 }
 .confirm-button {
   background-color: rgb(6, 92, 33); /* Background color for Confirm */
   color: rgb(251, 251, 251); /* Text color */
   border: 1px solid rgb(0, 0, 0);
+  height:50px;
 }
 a.cancel-button {
-  background-color: rgb(162, 14, 34); /* Background color for Cancel */
-  color: rgb(255, 255, 255); /* Text color */
+  display: inline-flex;
+  align-items: center; 
+  justify-content: center; 
+  background-color: rgb(162, 14, 34);
+  color: rgb(255, 255, 255);
   border: 1px solid rgb(0, 0, 0);
   text-decoration: none;
   text-align: center;
   font-weight: bold;
   width: 200px;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: all 0.3s ease;
+  font-family: Arial, Helvetica, sans-serif; 
+  height: 30px;
 }
 
 a.cancel-button:hover {
