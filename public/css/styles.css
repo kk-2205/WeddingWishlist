@@ -409,7 +409,7 @@ body {
   color: rgb(251, 251, 251); /* Text color */
   border: 1px solid rgb(0, 0, 0);
 }
-.cancel-button {
+a.cancel-button {
   background-color: rgb(162, 14, 34); /* Background color for Cancel */
   color: rgb(255, 255, 255); /* Text color */
   border: 1px solid rgb(0, 0, 0);
