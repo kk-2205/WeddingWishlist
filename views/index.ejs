@@ -90,9 +90,10 @@
 
     <!-- Script for showing login alert -->
     <script>
-        function showLoginAlert() {
-            alert('Please log in to add an item to the wishlist.');
-        }
+        // Check if login success flag is set
+        if (session.loginSuccess) {
+          alert('Successfully logged in!');
+           session.loginSuccess = false; }
     </script>
 </body>
 </html>

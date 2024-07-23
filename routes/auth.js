@@ -84,10 +84,9 @@ router.post('/guest-login', async (req, res) => {
       req.session.userId = user._id;
       req.session.isMarriedCouple = false;
       req.session.userName = user.name;
-      document.getElementById('confirmForm').addEventListener('submit', function(event) {
-        alert('Your purchase has been confirmed!');
-    });
-    res.redirect('/');s
+      req.session.loginSuccess = true;
+
+    res.redirect('/');
     } else {
       console.log('incorrect')
       res.redirect('/auth/guest-login');
