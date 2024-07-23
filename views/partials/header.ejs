@@ -13,9 +13,6 @@
         <% } else if (loggedIn) { %>
           <a href="/wishlist/saved" class="btn">Saved List</a>
           <a href="/auth/logout" class="btn">Logout</a>
-         <% if(user) { %>
-            <span class="couple-name"> <%= user.name %></span>
-         <% } %>
       <% } else { %>
         <a href="/auth/signup" class="btn">Sign Up</a>
         <a href="/auth/login" class="btn">Admin Login</a>
