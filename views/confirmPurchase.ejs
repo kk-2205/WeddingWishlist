@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label>Price:</label>
-                <p><%= item.price %></p>
+                <p><%= item.price ? Rs. item.price : 'No specific amount' %></p>
                 <input type="hidden" name="price" value="<%= item.price %>">
             </div>
             <div class="form-group">
