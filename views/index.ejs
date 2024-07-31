@@ -66,7 +66,7 @@
             <div class="wishlist-item">
                 <img src="<%= item.image %>" alt="<%= item.name %>">
                 <br><h3><%= item.name %></h3><br>
-                <p class="Item-price">Rs. <%= item.price%></p><br><br>
+                <p class="Item-price">Rs. <%= item.price ? item.price : 'XXXX' %></p><br><br>
                 <form action="/wishlist/saved" method="post">
                     <input type="hidden" name="id" value="<%= item._id %>">
                     <button type="submit" class="btn-submit">Select Item</button>
