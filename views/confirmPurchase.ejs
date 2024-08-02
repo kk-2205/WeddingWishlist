@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <h1>Confirm Purchase</h1>
-        <a href="/wishlist/saved" type="button" class="back-btn-submit">BACK</a>
+        <a href="/wishlist/saved" type="button" class="cancel-button">BACK</a>
         <p>PLEASE DO NOT MOVE TO THE PREVIOUS PAGE OR RELOAD THE WEBSITE. PLEASE CLICK THE CANCEL BUTTON IF YOU DO NOT INTEND TO PURCHASE THIS ITEM!</p>
         <form id="confirmForm" action="/wishlist/confirmPurchase" method="post">
             <input type="hidden" name="id" value="<%= item._id %>"> <!-- Hidden input for item ID -->
@@ -61,7 +61,7 @@
             <div class="button-group">
                 <button type="submit" class="confirm-button">Confirm Purchase</button>
             </form>
-        <a href="/wishlist/saved" type="button" class="cancel-button">CANCEL</a>
+        <a href="/wishlist/saved" type="button" class="back-button-submit">CANCEL</a>
         <form id="cancelForm" action="/wishlist/cancel" method="post">
             <input type="hidden" name="id" value="<%= item._id %>">
             <button type="submit" class="btn-submit">Move Item back to Wishlist</button>
