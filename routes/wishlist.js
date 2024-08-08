@@ -154,6 +154,32 @@ router.post('/confirmPurchase', isAuthenticated, isGuest, async (req, res) => {
     await user.save();
 
     await TemporaryItem.findByIdAndDelete(id);
+    const itemname = purchasedItem.name;
+    const email = user.email;
+    const name = user.name;
+    // Send password via email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `${name}, Your purchase has been confirmed`,
+      text: `You're purchase of ${itemname}, has been confirmed! '`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Message sent: %s', info.messageId);
+      }
+    });
 
     res.redirect('/');
   } catch (err) {
