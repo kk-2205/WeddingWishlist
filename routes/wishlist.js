@@ -4,6 +4,7 @@ const WishlistItem = require('../models/WishlistItem');
 const TemporaryItem = require('../models/TemporaryItem');
 const PurchasedItem = require('../models/PurchasedItem');
 const User = require('../models/User');
+const nodemailer = require('nodemailer');
 const moment = require('moment');
 
 // Middleware to check if the user is authenticated
@@ -169,8 +170,8 @@ router.post('/confirmPurchase', isAuthenticated, isGuest, async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: `${name}, Your purchase has been confirmed`,
-      text: `You're purchase of ${itemname}, has been confirmed! '`
+      subject: `${name}, Your Purchase Has Been Successfully Confirmed!`,
+  text: `Dear ${name},\n\nWe are pleased to inform you that your purchase of "${itemname}" has been successfully confirmed. Thank you for your generous contribution to Sai and Soham's wedding wishlist!\n\nBest regards,\nKarishma Kamalahasan\nSai and Soham Wedding Wishlist Team`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
